@@ -1,5 +1,5 @@
 "use server";
-import prisma from "../../backend/client/client";
+import prisma from "../backend/client/client";
 import bcrypt from "bcryptjs";
 
 export async function register(formData: FormData) {

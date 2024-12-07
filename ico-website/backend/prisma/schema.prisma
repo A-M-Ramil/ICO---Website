@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // You can replace with MySQL, SQLite, etc.
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid()) // Unique user ID
+  email       String   @unique              // User email
+  walletAddress String @unique              // Crypto wallet address
+  isAdmin     Boolean  @default(false)      // Admin flag
+  kycStatus   KYCStatus?                   // Relationship to KYCStatus
+  transactions Transaction[]               // Relationship to transactions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model KYCStatus {
+  id         String   @id @default(cuid()) // Unique ID
+  userId     String   @unique              // User ID (relation)
+  user       User     @relation(fields: [userId], references: [id])
+  status     KYCState @default(PENDING)    // KYC approval status
+  document   String?                       // Link to uploaded document (if any)
+  comments   String?                       // Admin comments
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Transaction {
+  id         String   @id @default(cuid()) // Unique transaction ID
+  userId     String                          // User ID (relation)
+  user       User     @relation(fields: [userId], references: [id])
+  amount     Float                          // Amount of ETH contributed
+  tokenCount Int                            // Number of tokens purchased
+  status     TransactionState @default(SUCCESS) // Transaction status
+  createdAt  DateTime @default(now())
+}
+
+model Token {
+  id         String   @id @default(cuid()) // Unique token ID
+  totalSupply Int                          // Total token supply
+  reserved    Int                          // Tokens reserved for the sale
+  pricePerETH Float                        // Price of one token in ETH
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum KYCState {
+  PENDING  // KYC waiting for admin review
+  APPROVED // KYC approved by admin
+  REJECTED // KYC rejected by admin
+}
+
+enum TransactionState {
+  SUCCESS   // Successful transaction
+  FAILED    // Failed transaction
+  PENDING   // Pending transaction
+}

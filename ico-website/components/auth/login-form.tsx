@@ -30,8 +30,8 @@ export default function Loginform() {
 
     startTransition(() => {
       login(data).then((val) => {
-        setSuccess(val.success);
-        setError("val.error");
+        setSuccess(val.success ?? "");
+        setError(val.error ?? "");
       });
     });
   };

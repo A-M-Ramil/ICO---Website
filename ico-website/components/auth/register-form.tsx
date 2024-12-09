@@ -9,7 +9,7 @@ import { Input } from "@/components/assets/input";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { cn } from "@/utils/cn";
 import { FormError } from "../assets/form-error";
-import { login } from "@/actions/login";
+import { register } from "@/actions/register";
 import { useTransition } from "react";
 
 export default function Registerform() {
@@ -30,9 +30,9 @@ export default function Registerform() {
     setSuccess("");
 
     startTransition(() => {
-      login(data).then((val) => {
-        setSuccess(val.success);
-        setError(val.error);
+      register(data).then((val) => {
+        setSuccess(val.success ?? "");
+        setError(val.error ?? "");
       });
     });
   };

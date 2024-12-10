@@ -6,17 +6,23 @@ datasource db {
   provider = "postgresql" // You can replace with MySQL, SQLite, etc.
   url      = env("DATABASE_URL")
 }
-
+enum UserRole {
+  USER
+  ADMIN
+}
 model User {
+  name        String?  @default("") // User's name
   id          String   @id @default(cuid())
   email       String   @unique
   emailVerified DateTime?
+  image       String? @default("")
   walletAddress String? @unique
   isAdmin     Boolean  @default(false)
   kycStatus   KYCStatus?
   transactions Transaction[]
   accounts      Account[]
   password    String?
+  role        UserRole @default(USER)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

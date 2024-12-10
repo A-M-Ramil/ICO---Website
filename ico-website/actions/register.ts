@@ -25,3 +25,22 @@ export const register = async (values: z.infer<typeof registerSchema>) => {
   });
   return { success: "User created" };
 };
+
+/**
+ * User registration function.
+ *
+ * @param values - User input values, validated against `registerSchema`.
+ * @returns An object indicating success or error message.
+ *
+ * @description
+ * Ei function ta user registration er jonno use hoy.
+ * Prothome, input values `registerSchema` diye validate kora hoy.
+ * Jodi validation fail kore, tahole "Invalid fields" error return kore.
+ * Tarpor, email ar password input theke extract kora hoy.
+ * Password ta hash kora hoy bcrypt use kore.
+ * Email diye existing user check kora hoy.
+ * Jodi user already exist kore, tahole "User already exists" error return kore.
+ * Jodi user na thake, tahole new user create kora hoy database e.
+ * Shesh e, "User created" success message return kore.
+ *
+ */

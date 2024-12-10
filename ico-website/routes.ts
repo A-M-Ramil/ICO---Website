@@ -20,3 +20,13 @@ export const authRoutes = ["/auth/login", "/auth/register"];
 export const apiAuthPrefix = "api/auth";
 
 export const DEFAULT_LOGIN_REDIRECT = "/settings";
+
+/**
+ * routes e amra amader public routes, auth routes, apiAuthPrefix, DEFAULT_LOGIN_REDIRECT set kore rakhsi
+ * jate amra middleware e use korte pari
+ * jegula accessable segula access disi publicRoutes e
+ * jegula accessable na segula access na disi authRoutes e
+ * apiAuthPrefix hocce api authentication er jonno prefix
+ * DEFAULT_LOGIN_REDIRECT hocce user er login korar por user ta kothay redirect hobe seta
+ *
+ */

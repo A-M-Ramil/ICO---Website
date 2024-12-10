@@ -11,6 +11,8 @@ import { cn } from "@/utils/cn";
 import { FormError } from "../assets/form-error";
 import { login } from "@/actions/login";
 import { useTransition } from "react";
+import { signIn } from "next-auth/react";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 export default function Loginform() {
   const [error, setError] = useState("");
@@ -23,6 +25,9 @@ export default function Loginform() {
       password: "",
     },
   });
+  const onClick = (provider: "google" | "github") => {
+    signIn(provider, { callbackUrl: DEFAULT_LOGIN_REDIRECT });
+  };
 
   const onSubmit = (data: z.infer<typeof loginSchema>) => {
     setError("");
@@ -30,7 +35,7 @@ export default function Loginform() {
 
     startTransition(() => {
       login(data).then((val) => {
-        setSuccess(val.success ?? "");
+        setSuccess(val.success ? "Success" : "");
         setError(val.error ?? "");
       });
     });
@@ -88,7 +93,7 @@ export default function Loginform() {
           <div className="flex flex-col space-y-4">
             <button
               className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-              type="submit"
+              onClick={() => onClick("github")}
             >
               <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
               <span className="text-neutral-700 dark:text-neutral-300 text-sm">
@@ -98,7 +103,7 @@ export default function Loginform() {
             </button>
             <button
               className="relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-              type="submit"
+              onClick={() => onClick("google")}
             >
               <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" />
               <span className="text-neutral-700 dark:text-neutral-300 text-sm">
